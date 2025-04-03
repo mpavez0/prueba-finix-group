@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace GestorFacturas.Domain.Entities
 {
-    internal class InvoiceCreditNote
+    public class InvoiceCreditNote
     {
+        public int CreditNoteId { get; set; }
+        public int InvoiceNumber { get; set; }
         public int CreditNoteNumber { get; set; }
         public DateTime CreditNoteDate { get; set; }
-        public decimal CreditNoteAmount { get; set; }
+        public int CreditNoteAmount { get; set; }
+
+        public Invoice Invoice { get; set; }
     }
 }

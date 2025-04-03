@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 
 namespace GestorFacturas.Domain.Entities
 {
-    internal class Invoice
+    public class Invoice
     {
         public int InvoiceNumber { get; set; }
         public DateTime InvoiceDate { get; set; }
-        public required string InvoiceStatus { get; set; }
-        public decimal TotalAmount { get; set; }
+        public string InvoiceStatus { get; set; }
+        public int TotalAmount { get; set; }
         public int DaysToDue { get; set; }
         public DateTime PaymentDueDate { get; set; }
-        public required string PaymentStatus { get; set; }
-        public List<InvoiceDetail> InvoiceDetail { get; set; } = new List<InvoiceDetail>();
-        public required InvoicePayment InvoicePayment { get; set; }
-        public List<InvoiceCreditNote> InvoiceCreditNote { get; set; } = new List<InvoiceCreditNote>();
-        public required Customer Customer { get; set; }
+        public string PaymentStatus { get; set; }
+
+        // Clave foránea
+        public string CustomerRun { get; set; }
+        public Customer Customer { get; set; }
+
+        // Relaciones
+        public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
+        public InvoicePayment InvoicePayment { get; set; }
+        public ICollection<InvoiceCreditNote> InvoiceCreditNotes { get; set; }
     }
 }

@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace GestorFacturas.Domain.Entities
 {
-    internal class InvoiceDetail
+    public class InvoiceDetail
     {
+        public int DetailId { get; set; }
+        public int InvoiceNumber { get; set; }
         public string ProductName { get; set; }
-        public decimal UnitPrice { get; set; }
+        public int UnitPrice { get; set; }
         public int Quantity { get; set; }
-        public decimal Subtotal { get; set; }
+        public int Subtotal { get; set; }
+
+        public Invoice Invoice { get; set; }
     }
 }

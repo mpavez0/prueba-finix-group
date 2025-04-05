@@ -18,7 +18,7 @@ namespace GestorFacturas.Domain.Extensions
         }
         public static IApplicationBuilder UseAuthorizationMiddleware(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<AuthorizationMiddleware>();
+            return builder.UseMiddleware<AuthenticationMiddleware>();
         }
     }
 }

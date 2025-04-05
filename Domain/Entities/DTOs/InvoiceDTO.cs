@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
-namespace GestorFacturas.Domain.Entities
+namespace GestorFacturas.Domain.Entities.DTOs
 {
-    public class Invoice
+    public class InvoiceDTO
     {
-        [Key]
         [JsonPropertyName("invoice_number")]
         public int InvoiceNumber { get; set; }
         [JsonPropertyName("rejected")]
@@ -27,15 +20,13 @@ namespace GestorFacturas.Domain.Entities
         public string PaymentDueDate { get; set; }
         [JsonPropertyName("payment_status")]
         public string? PaymentStatus { get; set; }
-        [JsonPropertyName("customer_id")]
-        public int CustomerId { get; set; }
         [JsonPropertyName("customer")]
-        public Customer? Customer { get; set; }
+        public CustomerDTO? Customer { get; set; }
         [JsonPropertyName("invoice_detail")]
-        public ICollection<InvoiceDetail>? InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+        public ICollection<InvoiceDetailDTO>? InvoiceDetails { get; set; } = new List<InvoiceDetailDTO>();
         [JsonPropertyName("invoice_payment")]
-        public InvoicePayment? InvoicePayment { get; set; }
+        public InvoicePaymentDTO? InvoicePayment { get; set; }
         [JsonPropertyName("invoice_credit_note")]
-        public ICollection<CreditNote>? InvoiceCreditNotes { get; set; } = new List<CreditNote>();
+        public ICollection<CreditNoteDTO>? InvoiceCreditNotes { get; set; } = new List<CreditNoteDTO>();
     }
 }

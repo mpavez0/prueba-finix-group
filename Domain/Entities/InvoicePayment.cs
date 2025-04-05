@@ -1,14 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GestorFacturas.Domain.Entities
 {
-    internal class InvoicePayment
+    public class InvoicePayment
     {
-        public string PaymentMethod { get; set; }
-        public DateTime? PaymentDate { get; set; }
+        [Key]
+        [JsonPropertyName("invoice_number")]
+        public int InvoiceNumber { get; set; }
+
+        [JsonPropertyName("payment_method")]
+        public string? PaymentMethod { get; set; }
+
+        [JsonPropertyName("payment_date")]
+        public string? PaymentDate { get; set; }
+
+        [JsonPropertyName("invoice")]
+        public Invoice? Invoice { get; set; }
     }
 }

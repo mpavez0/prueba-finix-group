@@ -23,4 +23,11 @@
     <ProjectReference Include="..\Domain\GestorFacturas.Domain.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="Data\bd_exam.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+
 </Project>

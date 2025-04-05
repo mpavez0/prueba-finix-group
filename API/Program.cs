@@ -81,7 +81,10 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.EnsureCreated();
 
     var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();
-    await seeder.SeedDataAsync(dbContext, "..\\Infrastructure\\Data\\bd_exam.json");
+
+    var basePath = AppContext.BaseDirectory;
+    var jsonFilePath = Path.Combine(basePath, "Data", "bd_exam.json");
+    await seeder.SeedDataAsync(dbContext, jsonFilePath);
 }
 
 app.MapInvoiceEndpoints();

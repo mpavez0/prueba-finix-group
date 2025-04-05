@@ -20,13 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Middlewares\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Domain\GestorFacturas.Domain.csproj" />
+    <ProjectReference Include="..\GestorFacturas.Application\GestorFacturas.Application.csproj" />
     <ProjectReference Include="..\Infrastructure\GestorFacturas.Infrastructure.csproj" />
   </ItemGroup>
 

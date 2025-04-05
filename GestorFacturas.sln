@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96 d17.13
+VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.API", "API\GestorFacturas.API.csproj", "{2733685F-FE1A-493A-9344-5848E3B36898}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.Domain", "Domain\GestorFacturas.Domain.csproj", "{94DF0446-A598-4332-ACFA-914FBAC36854}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.Infrastructure", "Infrastructure\GestorFacturas.Infrastructure.csproj", "{9CE4ED31-EF2E-451C-9F89-E51E7C821507}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.Application", "GestorFacturas.Application\GestorFacturas.Application.csproj", "{43033BE3-47EE-4F0A-899B-2A871828B172}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9CE4ED31-EF2E-451C-9F89-E51E7C821507}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CE4ED31-EF2E-451C-9F89-E51E7C821507}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CE4ED31-EF2E-451C-9F89-E51E7C821507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43033BE3-47EE-4F0A-899B-2A871828B172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43033BE3-47EE-4F0A-899B-2A871828B172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43033BE3-47EE-4F0A-899B-2A871828B172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43033BE3-47EE-4F0A-899B-2A871828B172}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

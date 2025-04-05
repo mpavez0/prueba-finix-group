@@ -13,6 +13,9 @@ API para gestión de facturas utilizando una base de datos local. Las principale
   git clone https://github.com/mpavez0/prueba-finix-group
 
 - **Ejecutar solución**
+  
+  Estando en la raíz del proyecto, ejecutar
+  
   ````bash 
   docker build -t gestor-facturas-api .
   docker run --rm -p 5084:5084 gestor-facturas-api

@@ -16,6 +16,13 @@ namespace GestorFacturas.API.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
+
+            if (context.Request.Path.StartsWithSegments("/swagger"))
+            {
+                await _next(context);
+                return;
+            }
+
             if (!context.Request.Headers.TryGetValue(AuthorizationHeaderName, out var authHeader))
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;

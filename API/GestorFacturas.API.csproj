@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\GestorFacturas.Domain.csproj" />
-    <ProjectReference Include="..\GestorFacturas.Application\GestorFacturas.Application.csproj" />
+    <ProjectReference Include="..\Application\GestorFacturas.Application.csproj" />
     <ProjectReference Include="..\Infrastructure\GestorFacturas.Infrastructure.csproj" />
   </ItemGroup>
 

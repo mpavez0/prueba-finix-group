@@ -86,15 +86,13 @@ using (var scope = app.Services.CreateScope())
 
 app.MapInvoiceEndpoints();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseAuthorizationMiddleware();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 app.UseMiddleware<ExceptionsMiddleware>();
 
-app.UseHttpsRedirection();
+app.UseAuthorizationMiddleware();
 
 app.Run();

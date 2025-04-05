@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.Domain", "Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.Infrastructure", "Infrastructure\GestorFacturas.Infrastructure.csproj", "{9CE4ED31-EF2E-451C-9F89-E51E7C821507}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.Application", "GestorFacturas.Application\GestorFacturas.Application.csproj", "{43033BE3-47EE-4F0A-899B-2A871828B172}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestorFacturas.Application", "Application\GestorFacturas.Application.csproj", "{43033BE3-47EE-4F0A-899B-2A871828B172}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

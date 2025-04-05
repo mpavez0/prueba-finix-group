@@ -26,8 +26,7 @@ namespace GestorFacturas.Application.Services
                 throw new ArgumentNullException("La nota de crédito no puede ser nula");
             }
 
-            var invoice = await _invoiceRepository.GetByIdAsync(invoiceNumber) ?? throw new Exception("La factura no fue encontrada en la base de datos");
-
+            var invoice = await _invoiceRepository.GetByIdAsync(invoiceNumber);
             if (invoice == null)
             {
                 throw new KeyNotFoundException("No se encontró ninguna factura con el número ingresado");

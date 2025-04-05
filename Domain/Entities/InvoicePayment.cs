@@ -1,18 +1,27 @@
-﻿using System;
+﻿using GestorFacturas.Common.Constants.Enums;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GestorFacturas.Domain.Entities
 {
     public class InvoicePayment
     {
-        // Relación 1:1 (InvoiceNumber como clave primaria)
+        [Key]
+        [JsonPropertyName("invoice_number")]
         public int InvoiceNumber { get; set; }
-        public string PaymentMethod { get; set; }
+
+        [JsonPropertyName("payment_method")]
+        public string? PaymentMethod { get; set; }
+
+        [JsonPropertyName("payment_date")]
         public DateTime? PaymentDate { get; set; }
 
-        public Invoice Invoice { get; set; }
+        [JsonPropertyName("invoice")]
+        public Invoice? Invoice { get; set; }
     }
 }

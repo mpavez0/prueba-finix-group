@@ -17,29 +17,30 @@ namespace GestorFacturas.Infrastructure.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<InvoicePayment> InvoicePayments { get; set; }
-        public DbSet<InvoiceCreditNote> InvoiceCreditNotes { get; set; }
+        public DbSet<CreditNote> InvoiceCreditNotes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Customer>()
-                .HasKey(c => c.CustomerRun);
+                .HasKey(c => c.CustomerId);
 
             modelBuilder.Entity<Invoice>()
                 .HasKey(i => i.InvoiceNumber);
 
-            modelBuilder.Entity<InvoicePayment>()
-                .HasKey(ip => ip.InvoiceNumber);
-
             modelBuilder.Entity<InvoiceDetail>()
-                .HasKey(id => id.InvoiceNumber);
+                .HasKey(d => d.DetailId);
 
-            modelBuilder.Entity<InvoiceCreditNote>()
-                .HasKey(id => id.InvoiceNumber);
+            modelBuilder.Entity<InvoicePayment>()
+                .HasKey(p => p.InvoiceNumber); // 1:1 con Invoice
+
+            modelBuilder.Entity<CreditNote>()
+                .HasKey(cn => cn.CreditNoteId); // 1:N con Invoice
 
             modelBuilder.Entity<Invoice>()
                 .HasOne(i => i.Customer)
                 .WithMany(c => c.Invoices)
-                .HasForeignKey(i => i.CustomerRun);
+                .HasForeignKey(i => i.CustomerId);
 
             modelBuilder.Entity<InvoiceDetail>()
                 .HasOne(id => id.Invoice)
@@ -51,7 +52,7 @@ namespace GestorFacturas.Infrastructure.Data
                 .WithOne(i => i.InvoicePayment)
                 .HasForeignKey<InvoicePayment>(ip => ip.InvoiceNumber);
 
-            modelBuilder.Entity<InvoiceCreditNote>()
+            modelBuilder.Entity<CreditNote>()
                 .HasOne(icn => icn.Invoice)
                 .WithMany(i => i.InvoiceCreditNotes)
                 .HasForeignKey(icn => icn.InvoiceNumber);

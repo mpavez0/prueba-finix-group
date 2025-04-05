@@ -1,12 +1,11 @@
-﻿
-using GestorFacturas.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace GestorFacturas.Domain.Entities.DTOs
 {
     public class InvoiceDTO
     {
+        [JsonPropertyName("invoice_number")]
+        public int InvoiceNumber { get; set; }
         [JsonPropertyName("rejected")]
         public bool Rejected { get; set; }
         [JsonPropertyName("invoice_date")]

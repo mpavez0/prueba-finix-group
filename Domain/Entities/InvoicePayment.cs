@@ -1,5 +1,4 @@
-﻿using GestorFacturas.Common.Constants.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,7 +18,7 @@ namespace GestorFacturas.Domain.Entities
         public string? PaymentMethod { get; set; }
 
         [JsonPropertyName("payment_date")]
-        public DateTime? PaymentDate { get; set; }
+        public string? PaymentDate { get; set; }
 
         [JsonPropertyName("invoice")]
         public Invoice? Invoice { get; set; }

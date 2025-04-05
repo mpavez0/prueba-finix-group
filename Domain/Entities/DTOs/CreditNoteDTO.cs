@@ -9,5 +9,6 @@ namespace GestorFacturas.Domain.Entities.DTOs
 
         [JsonPropertyName("credit_note_amount")]
         public int CreditNoteAmount { get; set; }
+
     }
 }

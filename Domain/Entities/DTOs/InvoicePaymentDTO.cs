@@ -9,6 +9,6 @@ namespace GestorFacturas.Domain.Entities.DTOs
         public string? PaymentMethod { get; set; }
 
         [JsonPropertyName("payment_date")]
-        public DateTime? PaymentDate { get; set; }
+        public string? PaymentDate { get; set; }
     }
 }

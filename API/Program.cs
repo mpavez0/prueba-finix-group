@@ -1,6 +1,6 @@
 using GestorFacturas.API.Controllers;
 using GestorFacturas.Domain.Extensions;
-using GestorFacturas.Application.Mappers;
+using GestorFacturas.Domain.Mappers;
 using GestorFacturas.Application.Services;
 using GestorFacturas.Application.Services.Interfaces;
 using GestorFacturas.Infrastructure.Data;
@@ -9,6 +9,7 @@ using GestorFacturas.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using GestorFacturas.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,16 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.ServiceGeneric();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost5173", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -59,6 +70,8 @@ builder.Services.AddScoped<ICreditNoteRepository, CreditNoteRepository>();
 builder.Services.AddScoped<ICreditNoteService, CreditNoteService>();
 
 var app = builder.Build();
+
+app.UseCors("AllowLocalhost5173");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -80,6 +93,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorizationMiddleware();
+app.UseMiddleware<ExceptionsMiddleware>();
 
 app.UseHttpsRedirection();
 

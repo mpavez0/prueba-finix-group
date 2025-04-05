@@ -1,12 +1,6 @@
 ﻿using GestorFacturas.Domain.Entities;
-using GestorFacturas.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace GestorFacturas.Infrastructure.Data
 {
@@ -21,75 +15,81 @@ namespace GestorFacturas.Infrastructure.Data
             }
 
             var jsonString = await File.ReadAllTextAsync(jsonFilePath);
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
 
-            var invoicesRoot = JsonSerializer.Deserialize<BaseInvoice>(jsonString, options);
+            var invoicesRoot = JsonSerializer.Deserialize<BaseInvoice>(jsonString);
             if (invoicesRoot == null || invoicesRoot.Invoices == null)
             {
                 Console.WriteLine("El JSON no tiene el formato esperado.");
                 return;
             }
 
-            foreach (var invoiceDto in invoicesRoot.Invoices)
+            foreach (var originalInvoice in invoicesRoot.Invoices)
             {
 
-                var customerEntity = await LoadCustomer(dbContext, invoiceDto);
+                var customerEntity = await LoadCustomer(dbContext, originalInvoice);
 
-                var invoiceEntity = LoadInvoice(dbContext, invoiceDto, customerEntity);
+                var fixedInvoice = LoadInvoice(dbContext, originalInvoice, customerEntity);
 
-                var totalDetails = LoadDetails(dbContext, invoiceDto, invoiceEntity);
+                var totalDetails = LoadDetails(dbContext, originalInvoice, fixedInvoice);
 
-                var totalCreditNotes = LoadCreditNote(dbContext, invoiceDto, invoiceEntity);
+                var totalCreditNotes = LoadCreditNote(dbContext, originalInvoice, fixedInvoice);
 
-                if (invoiceEntity.TotalAmount != totalDetails)
-                {
-                    invoiceEntity.Rejected = true;
-                }
+                CalculateInvoiceStatus(fixedInvoice, totalDetails, totalCreditNotes);
 
-                if ((invoiceEntity.InvoiceCreditNotes?.Count ?? 0) == 0)
-                {
-                    invoiceEntity.InvoiceStatus = "Issued";
-                }
-                else if (invoiceEntity.TotalAmount == totalCreditNotes)
-                {
-                    invoiceEntity.InvoiceStatus = "Cancelled";
-                }
-                else
-                {
-                    invoiceEntity.InvoiceStatus = "Partial";
-                }
+                CalculateInvoicePaymentStatus(originalInvoice, fixedInvoice);
 
-                DateTime actualDate = DateTime.Now;
-                var paymentDueDate = DateTime.Parse(invoiceDto.PaymentDueDate);
+                LoadPayment(dbContext, originalInvoice, fixedInvoice);
 
-                if (paymentDueDate < actualDate && invoiceDto.InvoicePayment == null)
-                {
-                    invoiceDto.PaymentStatus = "Overdue";
-                }
-                else if (paymentDueDate >= actualDate && invoiceDto.InvoicePayment == null)
-                {
-                    invoiceDto.PaymentStatus = "Pending";
-                }
-                else if (invoiceDto.InvoicePayment != null)
-                {
-                    invoiceDto.PaymentStatus = "Paid";
-                }
-                else
-                {
-                    invoiceDto.PaymentStatus = "Error";
-                    throw new Exception("Error al asignar un estado de pago a la factura");
-                }
-
-                LoadPayment(dbContext, invoiceDto, invoiceEntity);
-
-                dbContext.Invoices.Add(invoiceEntity);
+                dbContext.Invoices.Add(fixedInvoice);
 
             }
 
             await dbContext.SaveChangesAsync();
+        }
+
+        internal static void CalculateInvoiceStatus(Invoice fixedInvoice, int totalDetails, int totalCreditNotes)
+        {
+            if (fixedInvoice.TotalAmount != totalDetails)
+            {
+                fixedInvoice.Rejected = true;
+            }
+
+            if ((fixedInvoice.InvoiceCreditNotes?.Count ?? 0) == 0)
+            {
+                fixedInvoice.InvoiceStatus = "Issued";
+            }
+            else if (fixedInvoice.TotalAmount == totalCreditNotes)
+            {
+                fixedInvoice.InvoiceStatus = "Cancelled";
+            }
+            else
+            {
+                fixedInvoice.InvoiceStatus = "Partial";
+            }
+        }
+        
+        internal static void CalculateInvoicePaymentStatus(Invoice originalInvoice, Invoice fixedInvoice)
+        {
+            DateTime actualDate = DateTime.Now;
+            var paymentDueDate = DateTime.Parse(originalInvoice.PaymentDueDate);
+
+            if (paymentDueDate < actualDate && originalInvoice.InvoicePayment.PaymentDate == null)
+            {
+                fixedInvoice.PaymentStatus = "Overdue";
+            }
+            else if (paymentDueDate >= actualDate && originalInvoice.InvoicePayment.PaymentDate == null)
+            {
+                fixedInvoice.PaymentStatus = "Pending";
+            }
+            else if (originalInvoice.InvoicePayment.PaymentDate != null)
+            {
+                fixedInvoice.PaymentStatus = "Paid";
+            }
+            else
+            {
+                fixedInvoice.PaymentStatus = "Error";
+                throw new Exception("Error al asignar un estado de pago a la factura");
+            }
         }
 
         internal static Invoice LoadInvoice(InvoiceDbContext dbContext, Invoice? invoiceDto, Customer customerEntity)

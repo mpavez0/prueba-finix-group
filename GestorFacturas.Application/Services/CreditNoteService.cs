@@ -2,11 +2,6 @@
 using GestorFacturas.Domain.Entities.DTOs;
 using GestorFacturas.Domain.Mappers;
 using GestorFacturas.Infrastructure.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestorFacturas.Application.Services
 {
@@ -28,10 +23,15 @@ namespace GestorFacturas.Application.Services
 
             if (creditNoteDTO == null)
             {
-                throw new ArgumentNullException(nameof(creditNoteDTO), "La nota de crédito no puede ser nula");
+                throw new ArgumentNullException("La nota de crédito no puede ser nula");
             }
 
             var invoice = await _invoiceRepository.GetByIdAsync(invoiceNumber) ?? throw new Exception("La factura no fue encontrada en la base de datos");
+
+            if (invoice == null)
+            {
+                throw new KeyNotFoundException("No se encontró ninguna factura con el número ingresado");
+            }
 
             var creditNote = _mapper.MapDTOToCreditNote(creditNoteDTO);
 

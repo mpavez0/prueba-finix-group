@@ -1,5 +1,4 @@
-﻿using GestorFacturas.Common.Constants.Enums;
-using GestorFacturas.Domain.Entities;
+﻿using GestorFacturas.Domain.Entities;
 using GestorFacturas.Domain.Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace GestorFacturas.Application.Services.Interfaces
 {
     public interface IInvoiceService
     {
-        Task<IEnumerable<InvoiceDTO>> GetAllAsync();
+        Task<PagedResponseDTO<InvoiceDTO>> GetAllAsync(int page, int pageSize);
         Task<InvoiceDTO> GetByIdAsync(int invoiceNumber);
         Task<IEnumerable<InvoiceDTO>> GetByInvoiceStatus(string paymentStatus);
         Task<IEnumerable<InvoiceDTO>> GetByPaymentStatus(string invoiceStatus);

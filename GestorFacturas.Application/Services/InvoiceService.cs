@@ -1,14 +1,7 @@
 ﻿using GestorFacturas.Application.Services.Interfaces;
-using GestorFacturas.Common.Constants.Enums;
-using GestorFacturas.Domain.Entities;
 using GestorFacturas.Domain.Entities.DTOs;
 using GestorFacturas.Domain.Mappers;
 using GestorFacturas.Infrastructure.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestorFacturas.Application.Services
 {
@@ -22,31 +15,56 @@ namespace GestorFacturas.Application.Services
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<InvoiceDTO>> GetAllAsync()
+        public async Task<PagedResponseDTO<InvoiceDTO>> GetAllAsync(int page, int pageSize)
         {
-            var invoiceDTOList = new List<InvoiceDTO>();
-            
-            var invoicesList = await _repository.GetAllAsync();
+            var pagedInvoices = await _repository.GetAllAsync(page, pageSize);
 
-            foreach (var invoice in invoicesList)
+            var invoiceDTOList = pagedInvoices.Items
+                .Select(inv => _mapper.MapInvoiceToDTO(inv))
+                .ToList();
+
+            var response = new PagedResponseDTO<InvoiceDTO>
             {
-                invoiceDTOList.Add(_mapper.MapInvoiceToDTO(invoice));
-            }
+                Items = invoiceDTOList,
+                Page = pagedInvoices.Page,
+                PageSize = pagedInvoices.PageSize,
+                TotalCount = pagedInvoices.TotalCount
+            };
 
-            return invoiceDTOList;
+            return response;
         }
 
         public async Task<InvoiceDTO> GetByIdAsync(int invoiceNumber)
         {
+            if (invoiceNumber < 0) {
+                throw new ArgumentException("El número de la factura no puede ser menor a 0");
+            }
+
             var invoice = await _repository.GetByIdAsync(invoiceNumber);
+
+            if (invoice == null)
+            {
+                throw new KeyNotFoundException("Factura #{invoiceNumber} no encontrada");
+            }
 
             return _mapper.MapInvoiceToDTO(invoice);
         }
         public async Task<IEnumerable<InvoiceDTO>> GetByInvoiceStatus(string invoiceStatus)
         {
+
+            if (invoiceStatus == "")
+            {
+                throw new ArgumentException("El estado de la factura no puede estar vacío");
+            }
+
             var invoiceDTOList = new List<InvoiceDTO>();
 
             var invoiceList = await _repository.GetByInvoiceStatus(invoiceStatus);
+
+            if (invoiceList == null)
+            {
+                throw new KeyNotFoundException("Facturas con estado #{invoiceStatus} no encontradas");
+            }
 
             foreach (var invoice in invoiceList)
             {
@@ -58,9 +76,20 @@ namespace GestorFacturas.Application.Services
 
         public async Task<IEnumerable<InvoiceDTO>> GetByPaymentStatus(string paymentStatus)
         {
+            if (paymentStatus == "")
+            {
+                throw new ArgumentException("El estado de pago la factura no puede estar vacío");
+            }
+
             var invoiceDTOList = new List<InvoiceDTO>();
 
             var invoiceList = await _repository.GetByPaymentStatus(paymentStatus);
+
+            if (invoiceList == null)
+            {
+                throw new KeyNotFoundException("Facturas con estado #{paymentStatus} no encontradas");
+            }
+
 
             foreach (var invoice in invoiceList) {
                 invoiceDTOList.Add(_mapper.MapInvoiceToDTO(invoice));

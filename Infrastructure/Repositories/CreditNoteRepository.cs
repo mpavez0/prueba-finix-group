@@ -22,7 +22,11 @@ namespace GestorFacturas.Infrastructure.Repositories
         {
             if (invoice == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException("La factura no puede estar vacía");
+            }
+
+            if (creditNote == null) {
+                throw new NullReferenceException("La nota de crédito no puede estar vacía");
             }
 
             invoice.InvoiceCreditNotes.Add(creditNote);
